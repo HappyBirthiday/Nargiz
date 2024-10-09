@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тестовая страница</title>
+</head>
+<body>
+    <h1>Привет! Это твоя тестовая страница!</h1>
+    <p>Ответь на вопросы и введите финальный ответ внизу:</p>
+
+    <p>Вопрос 1: ...</p>
+    <p>Вопрос 2: ...</p>
+    
+    <!-- Поле для финального ответа -->
+    <form id="finalAnswerForm">
+        <label for="answer">Введите ответ:</label>
+        <input type="text" id="answer" name="answer">
+        <button type="submit">Проверить</button>
+    </form>
+
+    <!-- Скрытое сообщение -->
+    <div id="hiddenMessage" style="display:none;">
+        <p>Поздравляю, ты ввел правильный ответ! Вот твоя открытка:</p>
+        <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
+    </div>
+
+    <script>
+        document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userAnswer = document.getElementById('answer').value;
+            const correctAnswer = "pox";  // Задаем правильный ответ
+
+            if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+                document.getElementById('hiddenMessage').style.display = 'block';  // Показываем открытку
+            } else {
+                alert("Неправильный ответ. Попробуйте снова!");
+            }
+        });
+    </script>
+</body>
+</html>
