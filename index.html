@@ -3,29 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тестовая страница</title>
+    <title>Happy birthday</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #f8e1f3; /* Светлый фон */
+        }
+        #welcomeSection {
+            border: 5px solid #ff69b4; /* Розовая рамка */
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #ffffff; /* Белый фон для секции приветствия */
+            margin-bottom: 20px;
+            transition: opacity 0.5s; /* Плавный переход */
+        }
+        #questionsSection {
+            display: none; /* Скрыть секцию с вопросами */
+            border: 5px solid #ff69b4; /* Розовая рамка */
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #ffffff; /* Белый фон для секции вопросов */
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff69b4; /* Розовый цвет кнопки */
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff1493; /* Темнее при наведении */
+        }
+    </style>
 </head>
 <body>
-    <h1>Привет! Это твоя тестовая страница!</h1>
-    <p>Ответь на вопросы и введите финальный ответ внизу:</p>
+    <div id="welcomeSection"> <!-- Секция приветствия -->
+        <h1>Привет, Наргиз!</h1>
+        <p>Сейчас перед тобой появится захватывающий тест. Если ты сможешь успешно его пройти, то в конце тебя ждёт награда! Чтобы начать, нажми на кнопку ниже.</p>
+        <button id="startButton">Начать тест</button> <!-- Кнопка для начала теста -->
+    </div>
 
-    <p>Вопрос 1: ...</p>
-    <p>Вопрос 2: ...</p>
-    
-    <!-- Поле для финального ответа -->
-    <form id="finalAnswerForm">
-        <label for="answer">Введите ответ:</label>
-        <input type="text" id="answer" name="answer">
-        <button type="submit">Проверить</button>
-    </form>
+    <div id="questionsSection"> <!-- Секция с вопросами -->
+        <p>Вопрос 1: ...</p>
+        <p>Вопрос 2: ...</p>
+        
+        <!-- Поле для финального ответа -->
+        <form id="finalAnswerForm">
+            <label for="answer">Введите ответ:</label>
+            <input type="text" id="answer" name="answer">
+            <button type="submit">Проверить</button>
+        </form>
 
-    <!-- Скрытое сообщение -->
-    <div id="hiddenMessage" style="display:none;">
-        <p>Поздравляю, ты ввел правильный ответ! Вот твоя открытка:</p>
-        <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
+        <!-- Скрытое сообщение -->
+        <div id="hiddenMessage" style="display:none;">
+            <p>Поздравляю, ты ввел правильный ответ! Вот твоя открытка:</p>
+            <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
+        </div>
     </div>
 
     <script>
+        // Обработчик события на кнопку "Начать тест"
+        document.getElementById('startButton').addEventListener('click', function() {
+            document.getElementById('welcomeSection').style.opacity = '0'; // Уменьшаем непрозрачность
+            setTimeout(() => {
+                document.getElementById('welcomeSection').style.display = 'none'; // Скрываем секцию приветствия
+                document.getElementById('questionsSection').style.display = 'block'; // Показываем секцию с вопросами
+            }, 500); // Ждем полсекунды перед скрытием
+        });
+
+        // Обработчик события на форму
         document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const userAnswer = document.getElementById('answer').value;
