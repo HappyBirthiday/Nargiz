@@ -10,6 +10,7 @@
             text-align: center;
             padding: 20px;
             background-color: #f8e1f3; /* Светлый фон */
+            overflow: hidden; /* Прячем скролл, чтобы анимация выглядела лучше */
         }
         #welcomeSection {
             border: 5px solid #ff69b4; /* Розовая рамка */
@@ -25,6 +26,7 @@
             padding: 20px;
             border-radius: 15px;
             background-color: #ffffff; /* Белый фон для секции вопросов */
+            position: relative; /* Для размещения канваса */
         }
         button {
             padding: 10px 20px;
@@ -38,14 +40,23 @@
         button:hover {
             background-color: #ff1493; /* Темнее при наведении */
         }
+        #confettiCanvas {
+            position: absolute; /* Чтобы разместить канвас за контентом */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Отключаем взаимодействие с канвасом */
+            display: none; /* Скрыть канвас по умолчанию */
+        }
     </style>
 </head>
 <body>
+    <canvas id="confettiCanvas"></canvas> <!-- Канвас для конфетти -->
+    
     <div id="welcomeSection"> <!-- Секция приветствия -->
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день — твой день рождения! В этот день для тебя приготовлен маленький сюрприз. Перед тобой появится увлекательный тест, который ты должна пройти. Этот тест полон загадок, ребусов и вопросов, но не волнуйся — мы уверены, что ты справишься!</p>
-        <p>Пройди все этапы, и если ты дашь правильный ответ, исходя из всех загадок, то тебя ждёт заслуженная награда. Возможно, это будет не просто, но в каждой загадке скрыта подсказка, а в конце ждёт настоящий сюрприз!</p>
-        <p>Чтобы начать, просто нажми на кнопку ниже, и удачи тебе в этом праздничном испытании!</p>
+        <p>Сейчас перед тобой появится захватывающий тест. Если ты сможешь успешно его пройти, то в конце тебя ждёт награда! Чтобы начать, нажми на кнопку ниже.</p>
         <button id="startButton">Начать тест</button> <!-- Кнопка для начала теста -->
     </div>
 
@@ -68,6 +79,54 @@
     </div>
 
     <script>
+        // Конфигурация конфетти
+        const canvas = document.getElementById("confettiCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+
+        function createParticle(x, y) {
+            const size = Math.random() * 5 + 5;
+            const speed = Math.random() * 3 + 2;
+            const angle = Math.random() * 2 * Math.PI;
+            const particle = {
+                x: x,
+                y: y,
+                size: size,
+                speedX: Math.cos(angle) * speed,
+                speedY: Math.sin(angle) * speed,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            };
+            particles.push(particle);
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                const particle = particles[i];
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                particle.size *= 0.95; // Уменьшаем размер
+                if (particle.size < 0.2) particles.splice(i--, 1); // Удаляем частицы, если они слишком малы
+
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fillStyle = particle.color;
+                ctx.fill();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        function startConfetti(x, y) {
+            for (let i = 0; i < 100; i++) {
+                createParticle(x, y);
+            }
+            canvas.style.display = "block"; // Показываем канвас
+            animate(); // Начинаем анимацию
+        }
+
         // Обработчик события на кнопку "Начать тест"
         document.getElementById('startButton').addEventListener('click', function() {
             document.getElementById('welcomeSection').style.opacity = '0'; // Уменьшаем непрозрачность
@@ -85,8 +144,9 @@
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 document.getElementById('hiddenMessage').style.display = 'block';  // Показываем открытку
+                startConfetti(window.innerWidth / 2, window.innerHeight / 2); // Запускаем конфетти
             } else {
-                alert("Ой, ты думала, что всё так просто? Подумай ещё раз!"); // Сообщение при неправильном ответе
+                alert("Ха, ты думала, что все так просто? Подумай ещё раз. Вот это называется отличница?"); // Сообщение о неправильном ответе
             }
         });
     </script>
