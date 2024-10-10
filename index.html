@@ -10,7 +10,7 @@
             text-align: center;
             padding: 20px;
             background-color: #f8e1f3; /* Светлый фон */
-            overflow: hidden; /* Прячем скролл, чтобы анимация выглядела лучше */
+            overflow: hidden; /* Прячем скролл */
         }
         #welcomeSection {
             border: 5px solid #ff69b4; /* Розовая рамка */
@@ -26,7 +26,7 @@
             padding: 20px;
             border-radius: 15px;
             background-color: #ffffff; /* Белый фон для секции вопросов */
-            position: relative; /* Для размещения канваса */
+            position: relative; /* Для размещения конфетти */
         }
         button {
             padding: 10px 20px;
@@ -40,20 +40,16 @@
         button:hover {
             background-color: #ff1493; /* Темнее при наведении */
         }
-        #confettiCanvas {
-            position: absolute; /* Чтобы разместить канвас за контентом */
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none; /* Отключаем взаимодействие с канвасом */
-            display: none; /* Скрыть канвас по умолчанию */
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
-    <canvas id="confettiCanvas"></canvas> <!-- Канвас для конфетти -->
-    
     <div id="welcomeSection"> <!-- Секция приветствия -->
         <h1>Привет, Наргиз!</h1>
         <p>Сейчас перед тобой появится захватывающий тест. Если ты сможешь успешно его пройти, то в конце тебя ждёт награда! Чтобы начать, нажми на кнопку ниже.</p>
@@ -75,56 +71,24 @@
         <div id="hiddenMessage" style="display:none;">
             <p>Поздравляю, ты ввел правильный ответ! Вот твоя открытка:</p>
             <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
+            <div id="confettiContainer"></div> <!-- Контейнер для конфетти -->
         </div>
     </div>
 
     <script>
-        // Конфигурация конфетти
-        const canvas = document.getElementById("confettiCanvas");
-        const ctx = canvas.getContext("2d");
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        // Функция для создания статичных конфетти
+        function createConfetti() {
+            const colors = ['#ff5733', '#ffbd33', '#75ff33', '#33ffbd', '#335bff', '#b033ff', '#ff33a1']; // Разноцветные конфетти
+            const confettiContainer = document.getElementById('confettiContainer');
 
-        let particles = [];
-
-        function createParticle(x, y) {
-            const size = Math.random() * 5 + 5;
-            const speed = Math.random() * 3 + 2;
-            const angle = Math.random() * 2 * Math.PI;
-            const particle = {
-                x: x,
-                y: y,
-                size: size,
-                speedX: Math.cos(angle) * speed,
-                speedY: Math.sin(angle) * speed,
-                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-            };
-            particles.push(particle);
-        }
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = 0; i < particles.length; i++) {
-                const particle = particles[i];
-                particle.x += particle.speedX;
-                particle.y += particle.speedY;
-                particle.size *= 0.95; // Уменьшаем размер
-                if (particle.size < 0.2) particles.splice(i--, 1); // Удаляем частицы, если они слишком малы
-
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fillStyle = particle.color;
-                ctx.fill();
+            for (let i = 0; i < 50; i++) { // Создаем 50 конфетти
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = Math.random() * 100 + 'vw'; // Позиция по горизонтали
+                confetti.style.top = Math.random() * 100 + 'vh'; // Позиция по вертикали
+                confettiContainer.appendChild(confetti);
             }
-            requestAnimationFrame(animate);
-        }
-
-        function startConfetti(x, y) {
-            for (let i = 0; i < 100; i++) {
-                createParticle(x, y);
-            }
-            canvas.style.display = "block"; // Показываем канвас
-            animate(); // Начинаем анимацию
         }
 
         // Обработчик события на кнопку "Начать тест"
@@ -144,7 +108,7 @@
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 document.getElementById('hiddenMessage').style.display = 'block';  // Показываем открытку
-                startConfetti(window.innerWidth / 2, window.innerHeight / 2); // Запускаем конфетти
+                createConfetti(); // Создаем конфетти
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз. Вот это называется отличница?"); // Сообщение о неправильном ответе
             }
