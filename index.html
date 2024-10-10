@@ -23,7 +23,12 @@
             position: relative;
             z-index: 1;
         }
-        #questionsSection, #hiddenMessage {
+        #questionsSection {
+            display: none;
+            max-height: 400px; /* Максимальная высота для секции вопросов */
+            overflow-y: auto; /* Прокрутка при переполнении */
+        }
+        #hiddenMessage {
             display: none;
         }
         button {
@@ -105,7 +110,7 @@
         </form>
     </div>
 
-    <div id="hiddenMessage" style="display:none;">
+    <div id="hiddenMessage">
         <h2>Поздравляем, Наргиз!</h2>
         <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
         <p>"Поздравляю, тебя бла бла бла, жир пох."</p>
@@ -127,12 +132,11 @@
         document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const userAnswer = document.getElementById('answer').value;
-            const correctAnswer = "pox";  // Задай правильный ответ
+            const correctAnswer = "pox";
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 questionsSection.style.display = 'none';
                 hiddenMessage.style.display = 'block';
-                // Генерация конфетти
                 createConfetti();
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз. Вот это называется отличница?");
