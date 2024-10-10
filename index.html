@@ -13,22 +13,18 @@
             overflow: hidden;
             position: relative;
         }
-        #welcomeSection {
+        #welcomeSection, #questionsSection, #hiddenMessage {
             border: 5px solid #ff69b4;
             padding: 20px;
             border-radius: 15px;
             background-color: #ffffff;
             margin-bottom: 20px;
             transition: opacity 0.5s;
-        }
-        #questionsSection {
-            display: none;
-            border: 5px solid #ff69b4;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: #ffffff;
             position: relative;
             z-index: 1;
+        }
+        #questionsSection, #hiddenMessage {
+            display: none;
         }
         button {
             padding: 10px 20px;
@@ -61,8 +57,8 @@
             border-radius: 50%;
         }
         .balloon {
-            width: 40px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
         }
     </style>
@@ -85,11 +81,12 @@
             <input type="text" id="answer" name="answer">
             <button type="submit">Проверить</button>
         </form>
+    </div>
 
-        <div id="hiddenMessage" style="display:none;">
-            <p>Поздравляю, ты ввел правильный ответ! Вот твоя открытка:</p>
-            <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
-        </div>
+    <div id="hiddenMessage">
+        <h2>Поздравляю!</h2>
+        <p>Ты успешно прошла тест! Вот твоя награда:</p>
+        <p><strong>Поздравляю, тебя бла бла бла, жир пох.</strong></p>
     </div>
 
     <script>
@@ -130,12 +127,12 @@
             const correctAnswer = "pox";
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                document.getElementById('hiddenMessage').style.display = 'block';
                 document.getElementById('questionsSection').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('questionsSection').style.display = 'none';
+                    document.getElementById('hiddenMessage').style.display = 'block';
+                    createConfettiAndBalloons();
                 }, 500);
-                createConfettiAndBalloons();
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз. Вот это называется отличница?");
             }
