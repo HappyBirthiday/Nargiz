@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+\<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -10,9 +10,11 @@
             text-align: center;
             padding: 20px;
             background-color: #f8e1f3;
-            overflow: hidden;
+            overflow-x: hidden; /* Разрешить вертикальную прокрутку, если контент слишком большой */
+            overflow-y: auto; /* Вертикальная прокрутка */
             position: relative;
         }
+
         #welcomeSection, #questionsSection, #hiddenMessage {
             border: 5px solid #ff69b4;
             padding: 20px;
@@ -23,14 +25,17 @@
             position: relative;
             z-index: 1;
         }
+
         #questionsSection {
             display: none;
-            max-height: 400px; /* Максимальная высота для секции вопросов */
-            overflow-y: auto; /* Прокрутка при переполнении */
+            max-height: 60vh; /* Установил максимальную высоту секции вопросов для лучшей прокрутки */
+            overflow-y: auto; /* Вертикальная прокрутка при переполнении */
         }
+
         #hiddenMessage {
             display: none;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -39,10 +44,13 @@
             border-radius: 10px;
             color: white;
             cursor: pointer;
+            margin-bottom: 15px;
         }
+
         button:hover {
             background-color: #ff1493;
         }
+
         #confettiContainer {
             position: absolute;
             top: 0;
@@ -52,6 +60,7 @@
             pointer-events: none;
             z-index: 0;
         }
+
         .confetti {
             position: absolute;
             opacity: 0.9;
@@ -59,12 +68,14 @@
             height: 15px;
             border-radius: 50%;
         }
+
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 20px;
         }
+
         input[type="text"] {
             padding: 10px;
             font-size: 16px;
@@ -73,6 +84,7 @@
             max-width: 300px;
             box-sizing: border-box;
         }
+
         button {
             margin-top: 10px;
         }
@@ -81,28 +93,19 @@
 <body>
     <div id="welcomeSection">
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код) и ты его должна ввести на поле которое в самом низу.</p>
+        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код), и ты его должна ввести на поле в самом низу.</p>
         <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
         <button id="startButton">Начать тест</button>
     </div>
 
     <div id="questionsSection">
         <h2>Вопросы:</h2>
-        <p>1.Сколько согласных в этом вопросе?</p>
-        <p>2.Какой фирмы телефон у Чингиза?</p>
-        <p>3.Сколько страниц у нас в книге по географии?</p>
-        <p>4.В какой день недели в 9 классе у нас было 8 уроков?</p>
-        <p>5.Как в последний раз назывался wifi Анила?</p>
-        <p>6.Сколько лет директору?</p>
-        <p>7.: ...</p>
-        <p>8.: ...</p>
-        <p>9.: ...</p>
-        <p>10.: ...</p>
-        <p>11.: ...</p>
-        <p>12.: ...</p>
-        <p>13.: ...</p>
-        <p>14.: ...</p>
-        <p>15.: ...</p>
+        <p>1. Сколько согласных в этом вопросе?</p>
+        <p>2. Какой фирмы телефон у Чингиза?</p>
+        <p>3. Сколько страниц у нас в книге по географии?</p>
+        <p>4. В какой день недели в 9 классе у нас было 8 уроков?</p>
+        <p>5. Как в последний раз назывался wifi Анила?</p>
+        <p>6. Сколько лет директору?</p>
         <form id="finalAnswerForm">
             <label for="answer">Введите ответ:</label>
             <input type="text" id="answer" name="answer">
@@ -132,7 +135,7 @@
         document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const userAnswer = document.getElementById('answer').value;
-            const correctAnswer = "pox";
+            const correctAnswer = "pox";  // Задай правильный ответ
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 questionsSection.style.display = 'none';
