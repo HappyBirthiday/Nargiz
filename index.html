@@ -1,4 +1,4 @@
-\<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
@@ -10,8 +10,8 @@
             text-align: center;
             padding: 20px;
             background-color: #f8e1f3;
-            overflow-x: hidden; /* Разрешить вертикальную прокрутку, если контент слишком большой */
-            overflow-y: auto; /* Вертикальная прокрутка */
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
         }
 
@@ -28,8 +28,9 @@
 
         #questionsSection {
             display: none;
-            max-height: 60vh; /* Установил максимальную высоту секции вопросов для лучшей прокрутки */
-            overflow-y: auto; /* Вертикальная прокрутка при переполнении */
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-bottom: 10px;
         }
 
         #hiddenMessage {
@@ -85,8 +86,8 @@
             box-sizing: border-box;
         }
 
-        button {
-            margin-top: 10px;
+        p {
+            margin: 10px 0;
         }
     </style>
 </head>
@@ -135,7 +136,7 @@
         document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const userAnswer = document.getElementById('answer').value;
-            const correctAnswer = "pox";  // Задай правильный ответ
+            const correctAnswer = "pox";
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 questionsSection.style.display = 'none';
