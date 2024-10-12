@@ -165,16 +165,34 @@
         });
 
         function createConfetti() {
-            const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
-            for (let i = 0; i < 300; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.left = Math.random() * window.innerWidth + 'px';
-                confetti.style.top = Math.random() * window.innerHeight + 'px';
-                document.getElementById('confettiContainer').appendChild(confetti);
-            }
+    const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
+    const totalConfetti = 200;
+
+    for (let i = 0; i < totalConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        let left;
+        if (Math.random() < 0.5) {
+            left = Math.random() * (window.innerWidth * 0.2);
+        } else {
+            left = window.innerWidth * 0.8 + Math.random() * (window.innerWidth * 0.2);
         }
+        confetti.style.left = left + 'px';
+
+        let top;
+        if (Math.random() < 0.5) {
+            top = Math.random() * (window.innerHeight * 0.2);
+        } else {
+            top = window.innerHeight * 0.8 + Math.random() * (window.innerHeight * 0.2);
+        }
+        confetti.style.top = top + 'px';
+
+        document.getElementById('confettiContainer').appendChild(confetti);
+    }
+}
+
     </script>
 </body>
 </html>
