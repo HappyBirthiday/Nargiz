@@ -164,7 +164,7 @@
             }
         });
 
-        function createConfetti() {
+function createConfetti() {
     const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
     const totalConfetti = 200;
 
@@ -173,20 +173,28 @@
         confetti.className = 'confetti';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
-        let left;
-        if (Math.random() < 0.5) {
-            left = Math.random() * (window.innerWidth * 0.2);
-        } else {
-            left = window.innerWidth * 0.8 + Math.random() * (window.innerWidth * 0.2);
-        }
-        confetti.style.left = left + 'px';
+        let left, top;
 
-        let top;
+        // Случайно выбираем: конфетти будет располагаться по бокам или сверху/снизу
         if (Math.random() < 0.5) {
-            top = Math.random() * (window.innerHeight * 0.2);
+            // Появление по бокам (0-10% или 90-100%)
+            if (Math.random() < 0.5) {
+                left = Math.random() * (window.innerWidth * 0.1); // Левая сторона (0-10%)
+            } else {
+                left = window.innerWidth * 0.9 + Math.random() * (window.innerWidth * 0.1); // Правая сторона (90-100%)
+            }
+            top = Math.random() * window.innerHeight; // Любая высота
         } else {
-            top = window.innerHeight * 0.8 + Math.random() * (window.innerHeight * 0.2);
+            // Появление сверху или снизу (0-10% или 90-100%)
+            left = Math.random() * window.innerWidth; // Любая ширина
+            if (Math.random() < 0.5) {
+                top = Math.random() * (window.innerHeight * 0.1); // Верхняя часть (0-10%)
+            } else {
+                top = window.innerHeight * 0.9 + Math.random() * (window.innerHeight * 0.1); // Нижняя часть (90-100%)
+            }
         }
+
+        confetti.style.left = left + 'px';
         confetti.style.top = top + 'px';
 
         document.getElementById('confettiContainer').appendChild(confetti);
