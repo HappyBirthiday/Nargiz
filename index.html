@@ -9,32 +9,9 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background: linear-gradient(to right, #ff69b4, #ffcccb, #ffeb3b);
-            overflow: hidden;
+            background-color: #fbc6d9;
             position: relative;
         }
-
-        /* Эффект печатания */
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-        @keyframes blinkCaret {
-            from, to { border-color: transparent; }
-            50% { border-color: black; }
-        }
-
-        /* Оформление секции с поздравлением */
-        #congratsMessage {
-            font-size: 24px;
-            white-space: nowrap;
-            overflow: hidden;
-            border-right: 3px solid;
-            width: 0;
-            animation: typing 4s steps(40, end), blinkCaret 0.75s step-end infinite;
-            display: inline-block;
-        }
-
         #welcomeSection, #questionsSection, #hiddenMessage {
             border: 5px solid #ff69b4;
             padding: 20px;
@@ -47,13 +24,12 @@
         }
         #questionsSection {
             display: none;
-            max-height: 600px; 
+            max-height: 600px;
             overflow-y: auto;
         }
         #hiddenMessage {
             display: none;
         }
-
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -66,56 +42,58 @@
         button:hover {
             background-color: #ff1493;
         }
-
-        /* Анимация шаров */
-        @keyframes moveBalloons {
-            0% {
-                transform: translateY(100vh);
-                opacity: 0.9;
-            }
-            100% {
-                transform: translateY(-100vh);
-                opacity: 0;
-            }
-        }
-        .balloon {
+        #confettiContainer {
             position: absolute;
-            bottom: -100px;
-            width: 50px;
-            height: 70px;
-            background-color: #ff4081;
-            border-radius: 50%;
-            animation: moveBalloons 10s infinite ease-in-out;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
         }
-        .balloon:nth-child(2) { left: 20%; animation-delay: 2s; background-color: #00e676; }
-        .balloon:nth-child(3) { left: 40%; animation-delay: 4s; background-color: #2979ff; }
-        .balloon:nth-child(4) { left: 60%; animation-delay: 6s; background-color: #ffeb3b; }
-        .balloon:nth-child(5) { left: 80%; animation-delay: 8s; background-color: #651fff; }
-
+        .confetti {
+            position: absolute;
+            opacity: 0.9;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 300px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-    <div class="balloon"></div>
-
     <div id="welcomeSection">
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу.</p>
+        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код) и ты его должна ввести на поле которое в самом низу.</p>
+        <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
         <button id="startButton">Начать тест</button>
     </div>
 
     <div id="questionsSection">
         <h2>Вопросы:</h2>
-        <p>1.Сколько согласных в этом вопросе?</p>
-        <p>2.Какой фирмы телефон у Чингиза?</p>
-        <p>3.Сколько страниц у нас в книге по географии?</p>
-        <p>4.В какой день недели в 9 классе у нас было 8 уроков?</p>
-        <p>5.Как в последний раз назывался wifi Анила?</p>
-        <p>6.Сколько лет директору?</p>
-        <p>7.Под каким номером была школа где ты сдавала экзамен в марте в 9 классе?</p>
+        <p>1. Сколько согласных в этом вопросе?</p>
+        <p>2. Какой фирмы телефон у Чингиза?</p>
+        <p>3. Сколько страниц у нас в книге по географии?</p>
+        <p>4. В какой день недели в 9 классе у нас было 8 уроков?</p>
+        <p>5. Как в последний раз назывался wifi Анила?</p>
+        <p>6. Сколько лет директору?</p>
+        <p>7. Под каким номером была школа, где ты сдавала экзамен в марте в 9 классе?</p>
         <form id="finalAnswerForm">
             <label for="answer">Введите ответ:</label>
             <input type="text" id="answer" name="answer">
@@ -125,7 +103,7 @@
 
     <div id="hiddenMessage">
         <h2>Поздравляем, Наргиз!</h2>
-        <div id="congratsMessage">Поздравляю, тебя бла бла бла, жир пох</div>
+        <p id="typedMessage"></p>
     </div>
 
     <div id="confettiContainer"></div>
@@ -135,7 +113,11 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const questionsSection = document.getElementById('questionsSection');
         const hiddenMessage = document.getElementById('hiddenMessage');
-        
+        const typedMessage = document.getElementById('typedMessage');
+        let textToType = 'Поздравляю, тебя бла бла бла, жир пох.';
+        let typingIndex = 0;
+        let typingInterval;
+
         startButton.addEventListener('click', function() {
             welcomeSection.style.display = 'none';
             questionsSection.style.display = 'block';
@@ -149,11 +131,23 @@
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 questionsSection.style.display = 'none';
                 hiddenMessage.style.display = 'block';
+                startTyping();
                 createConfetti();
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз.");
             }
         });
+
+        function startTyping() {
+            typingInterval = setInterval(function() {
+                if (typingIndex < textToType.length) {
+                    typedMessage.textContent += textToType[typingIndex];
+                    typingIndex++;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 100);
+        }
 
         function createConfetti() {
             const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
