@@ -21,20 +21,15 @@
             border-radius: 15px;
             background-color: #ffffff;
             margin-bottom: 20px;
-            transition: opacity 0.5s;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
             position: relative;
             z-index: 1;
+            opacity: 1;
         }
 
-        #questionsSection {
+        #questionsSection, #hiddenMessage {
             display: none;
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-bottom: 10px;
-        }
-
-        #hiddenMessage {
-            display: none;
+            opacity: 0;
         }
 
         button {
@@ -87,14 +82,46 @@
         }
 
         p {
-            margin: 20px 0; /* Увеличенное расстояние между вопросами */
+            margin: 20px 0;
+        }
+
+        /* Эффект печати */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .typewriter-text {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid;
+            font-family: monospace;
+            letter-spacing: 2px;
+            animation: typing 4s steps(40, end), blink-caret 0.75s step-end infinite;
+            display: inline-block;
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+
+        /* Плавный переход */
+        .fade-in {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .fade-out {
+            opacity: 0;
+            transform: scale(0.9);
         }
     </style>
 </head>
 <body>
     <div id="welcomeSection">
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код), и ты его должна ввести на поле в самом низу.</p>
+        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение...</p>
         <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
         <button id="startButton">Начать тест</button>
     </div>
@@ -117,8 +144,7 @@
 
     <div id="hiddenMessage">
         <h2>Поздравляем, Наргиз!</h2>
-        <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
-        <p>"Поздравляю, тебя бла бла бла, жир пох."</p>
+        <p class="typewriter-text">Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
     </div>
 
     <div id="confettiContainer"></div>
@@ -128,10 +154,11 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const questionsSection = document.getElementById('questionsSection');
         const hiddenMessage = document.getElementById('hiddenMessage');
-        
+
         startButton.addEventListener('click', function() {
-            welcomeSection.style.display = 'none';
-            questionsSection.style.display = 'block';
+            fadeOut(welcomeSection, function() {
+                fadeIn(questionsSection);
+            });
         });
 
         document.getElementById('finalAnswerForm').addEventListener('submit', function(event) {
@@ -140,13 +167,29 @@
             const correctAnswer = "pox";
 
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
-                questionsSection.style.display = 'none';
-                hiddenMessage.style.display = 'block';
-                createConfetti();
+                fadeOut(questionsSection, function() {
+                    fadeIn(hiddenMessage);
+                    createConfetti();
+                });
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз.");
             }
         });
+
+        function fadeOut(element, callback) {
+            element.classList.add('fade-out');
+            setTimeout(function() {
+                element.style.display = 'none';
+                callback();
+            }, 500);
+        }
+
+        function fadeIn(element) {
+            element.style.display = 'block';
+            setTimeout(function() {
+                element.classList.add('fade-in');
+            }, 10);
+        }
 
         function createConfetti() {
             const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
