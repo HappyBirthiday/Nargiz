@@ -9,9 +9,12 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #fbc6d9;
+            background-color: #f8e1f3;
+            overflow-x: hidden;
+            overflow-y: auto;
             position: relative;
         }
+
         #welcomeSection, #questionsSection, #hiddenMessage {
             border: 5px solid #ff69b4;
             padding: 20px;
@@ -22,14 +25,18 @@
             position: relative;
             z-index: 1;
         }
+
         #questionsSection {
             display: none;
-            max-height: 600px;
+            max-height: 70vh;
             overflow-y: auto;
+            padding-bottom: 10px;
         }
+
         #hiddenMessage {
             display: none;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -38,10 +45,13 @@
             border-radius: 10px;
             color: white;
             cursor: pointer;
+            margin-bottom: 15px;
         }
+
         button:hover {
             background-color: #ff1493;
         }
+
         #confettiContainer {
             position: absolute;
             top: 0;
@@ -51,6 +61,7 @@
             pointer-events: none;
             z-index: 0;
         }
+
         .confetti {
             position: absolute;
             opacity: 0.9;
@@ -58,12 +69,14 @@
             height: 15px;
             border-radius: 50%;
         }
+
         form {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin-top: 20px;
         }
+
         input[type="text"] {
             padding: 10px;
             font-size: 16px;
@@ -72,15 +85,16 @@
             max-width: 300px;
             box-sizing: border-box;
         }
-        button {
-            margin-top: 10px;
+
+        p {
+            margin: 20px 0; /* Увеличенное расстояние между вопросами */
         }
     </style>
 </head>
 <body>
     <div id="welcomeSection">
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код) и ты его должна ввести на поле которое в самом низу.</p>
+        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код), и ты его должна ввести на поле в самом низу.</p>
         <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
         <button id="startButton">Начать тест</button>
     </div>
@@ -93,9 +107,9 @@
         <p>4. В какой день недели в 9 классе у нас было 8 уроков?</p>
         <p>5. Как в последний раз назывался wifi Анила?</p>
         <p>6. Сколько лет директору?</p>
-        <p>7. Под каким номером была школа, где ты сдавала экзамен в марте в 9 классе?</p>
+        <p>7. Под каким номером была школа где ты сдавала экзамен в марте в 9 классе?</p>
         <form id="finalAnswerForm">
-            <label for="answer">Введите ответ:</label>
+            <label for="answer">Введи ответ:</label>
             <input type="text" id="answer" name="answer">
             <button type="submit">Проверить</button>
         </form>
@@ -103,7 +117,8 @@
 
     <div id="hiddenMessage">
         <h2>Поздравляем, Наргиз!</h2>
-        <p id="typedMessage"></p>
+        <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
+        <p>"Поздравляю, тебя бла бла бла, жир пох."</p>
     </div>
 
     <div id="confettiContainer"></div>
@@ -113,11 +128,7 @@
         const welcomeSection = document.getElementById('welcomeSection');
         const questionsSection = document.getElementById('questionsSection');
         const hiddenMessage = document.getElementById('hiddenMessage');
-        const typedMessage = document.getElementById('typedMessage');
-        let textToType = 'Поздравляю, тебя бла бла бла, жир пох.';
-        let typingIndex = 0;
-        let typingInterval;
-
+        
         startButton.addEventListener('click', function() {
             welcomeSection.style.display = 'none';
             questionsSection.style.display = 'block';
@@ -131,23 +142,11 @@
             if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
                 questionsSection.style.display = 'none';
                 hiddenMessage.style.display = 'block';
-                startTyping();
                 createConfetti();
             } else {
                 alert("Ха, ты думала, что все так просто? Подумай ещё раз.");
             }
         });
-
-        function startTyping() {
-            typingInterval = setInterval(function() {
-                if (typingIndex < textToType.length) {
-                    typedMessage.textContent += textToType[typingIndex];
-                    typingIndex++;
-                } else {
-                    clearInterval(typingInterval);
-                }
-            }, 100);
-        }
 
         function createConfetti() {
             const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
