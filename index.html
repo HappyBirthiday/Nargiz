@@ -9,10 +9,30 @@
             font-family: Arial, sans-serif;
             text-align: center;
             padding: 20px;
-            background-color: #f8e1f3;
-            overflow-x: hidden;
-            overflow-y: auto;
+            background: linear-gradient(to right, #ff69b4, #ffcccb, #ffeb3b);
+            overflow: hidden;
             position: relative;
+        }
+
+        /* Эффект печатания */
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blinkCaret {
+            from, to { border-color: transparent; }
+            50% { border-color: black; }
+        }
+
+        /* Оформление секции с поздравлением */
+        #congratsMessage {
+            font-size: 24px;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 3px solid;
+            width: 0;
+            animation: typing 4s steps(40, end), blinkCaret 0.75s step-end infinite;
+            display: inline-block;
         }
 
         #welcomeSection, #questionsSection, #hiddenMessage {
@@ -25,14 +45,11 @@
             position: relative;
             z-index: 1;
         }
-
         #questionsSection {
             display: none;
-            max-height: 70vh;
+            max-height: 600px; 
             overflow-y: auto;
-            padding-bottom: 10px;
         }
-
         #hiddenMessage {
             display: none;
         }
@@ -45,68 +62,60 @@
             border-radius: 10px;
             color: white;
             cursor: pointer;
-            margin-bottom: 15px;
         }
-
         button:hover {
             background-color: #ff1493;
         }
 
-        #confettiContainer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        /* Анимация шаров */
+        @keyframes moveBalloons {
+            0% {
+                transform: translateY(100vh);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
         }
-
-        .confetti {
+        .balloon {
             position: absolute;
-            opacity: 0.9;
-            width: 15px;
-            height: 15px;
+            bottom: -100px;
+            width: 50px;
+            height: 70px;
+            background-color: #ff4081;
             border-radius: 50%;
+            animation: moveBalloons 10s infinite ease-in-out;
         }
+        .balloon:nth-child(2) { left: 20%; animation-delay: 2s; background-color: #00e676; }
+        .balloon:nth-child(3) { left: 40%; animation-delay: 4s; background-color: #2979ff; }
+        .balloon:nth-child(4) { left: 60%; animation-delay: 6s; background-color: #ffeb3b; }
+        .balloon:nth-child(5) { left: 80%; animation-delay: 8s; background-color: #651fff; }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            width: 100%;
-            max-width: 300px;
-            box-sizing: border-box;
-        }
-
-        p {
-            margin: 20px 0; /* Увеличенное расстояние между вопросами */
-        }
     </style>
 </head>
 <body>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
     <div id="welcomeSection">
         <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу. Все, что тебе нужно — это немного терпения и внимательности. Там несколько вопросов, исходя из которых у тебя должно получиться 1 ответ (код), и ты его должна ввести на поле в самом низу.</p>
-        <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
+        <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение. Впереди тебя ждут задачи, которые откроют путь к сюрпризу.</p>
         <button id="startButton">Начать тест</button>
     </div>
 
     <div id="questionsSection">
         <h2>Вопросы:</h2>
-        <p>1. Сколько согласных в этом вопросе?</p>
-        <p>2. Какой фирмы телефон у Чингиза?</p>
-        <p>3. Сколько страниц у нас в книге по географии?</p>
-        <p>4. В какой день недели в 9 классе у нас было 8 уроков?</p>
-        <p>5. Как в последний раз назывался wifi Анила?</p>
-        <p>6. Сколько лет директору?</p>
+        <p>1.Сколько согласных в этом вопросе?</p>
+        <p>2.Какой фирмы телефон у Чингиза?</p>
+        <p>3.Сколько страниц у нас в книге по географии?</p>
+        <p>4.В какой день недели в 9 классе у нас было 8 уроков?</p>
+        <p>5.Как в последний раз назывался wifi Анила?</p>
+        <p>6.Сколько лет директору?</p>
+        <p>7.Под каким номером была школа где ты сдавала экзамен в марте в 9 классе?</p>
         <form id="finalAnswerForm">
             <label for="answer">Введите ответ:</label>
             <input type="text" id="answer" name="answer">
@@ -116,8 +125,7 @@
 
     <div id="hiddenMessage">
         <h2>Поздравляем, Наргиз!</h2>
-        <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
-        <p>"Поздравляю, тебя бла бла бла, жир пох."</p>
+        <div id="congratsMessage">Поздравляю, тебя бла бла бла, жир пох</div>
     </div>
 
     <div id="confettiContainer"></div>
@@ -143,7 +151,7 @@
                 hiddenMessage.style.display = 'block';
                 createConfetti();
             } else {
-                alert("Ха, ты думала, что все так просто? Подумай ещё раз. Вот это называется отличница?");
+                alert("Ха, ты думала, что все так просто? Подумай ещё раз.");
             }
         });
 
