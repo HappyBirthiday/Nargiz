@@ -1,25 +1,27 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-  <title>Happy birthday</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
+  <title>Happy Birthday</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 20px;
-      background-color: #f8e1f3;
+      background-color: #ffe8d6; /* Праздничный персиковый */
       overflow-x: hidden;
       overflow-y: auto;
       position: relative;
     }
 
-    #welcomeSection, #countdownSection, #hiddenMessage {
-      border: 5px solid #ff69b4;
+    #welcomeSection,
+    #questionsSection,
+    #hiddenMessage {
+      border: 5px solid #f4a261; /* Золотисто-оранжевая рамка */
       padding: 20px;
       border-radius: 15px;
-      background-color: #ffffff;
+      background-color: #fff8f0; /* Мягкий кремовый фон */
       margin-bottom: 20px;
       transition: opacity 0.5s;
       position: relative;
@@ -27,16 +29,15 @@
     }
 
     @media (max-width: 768px) {
-      #welcomeSection, #countdownSection, #hiddenMessage {
+      #welcomeSection,
+      #questionsSection,
+      #hiddenMessage {
         padding: 26px;
         border-width: 7px;
       }
     }
 
-    #countdownSection {
-      display: none;
-    }
-
+    #questionsSection,
     #hiddenMessage {
       display: none;
     }
@@ -44,7 +45,7 @@
     button {
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #ff69b4;
+      background-color: #f4a261;
       border: none;
       border-radius: 10px;
       color: white;
@@ -53,7 +54,7 @@
     }
 
     button:hover {
-      background-color: #ff1493;
+      background-color: #e76f51;
     }
 
     #confettiContainer {
@@ -74,115 +75,106 @@
       border-radius: 50%;
     }
 
-    @keyframes fall {
-      to {
-        transform: translateY(100vh);
-      }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
     }
 
-    #timer {
-      font-size: 24px;
-      margin-top: 20px;
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+      width: 100%;
+      max-width: 300px;
+      box-sizing: border-box;
+    }
+
+    p {
+      margin: 20px 0;
     }
   </style>
 </head>
 <body>
+  <div id="welcomeSection">
+    <h1>Привет, Наргиз!</h1>
+    <p>Сегодня особенный день, и мы решили устроить для тебя небольшое приключение...</p>
+    <p>Если готова, жми на кнопку, чтобы начать. Мы уверены, ты справишься!</p>
+    <button id="startButton">Начать тест</button>
+  </div>
 
-<div id="welcomeSection">
-  <h1>Привет, Наргиз!</h1>
-  <p>Сегодня особенный день, и он совсем близко. Подожди чуть-чуть — и тебя ждёт сюрприз!</p>
-  <button id="startButton">Показать таймер</button>
-</div>
+  <div id="questionsSection">
+    <h2>Вопросы:</h2>
+    <p>1. Сколько согласных в этом вопросе?</p>
+    <!-- Остальные вопросы тут -->
+    <h2>Конечный ответ:</h2>
+    <form id="finalAnswerForm">
+      <label for="answer">Введи ответ:</label>
+      <input type="text" id="answer" name="answer" />
+      <button type="submit">Проверить</button>
+    </form>
+  </div>
 
-<div id="countdownSection">
-  <h2>До открытия поздравления осталось:</h2>
-  <div id="timer">Загрузка...</div>
-</div>
+  <div id="hiddenMessage">
+    <h2>Поздравляем, Наргиз!</h2>
+    <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
+    <h2>Дорогая Наргиз,</h2>
+    <p>а</p>
+    <p> п</p>
+    <p>е</p>
+    <p> пр</p>
+    <p>е</p>
+    <p>е</p>
+    <p>ен.</p>
+    <p>екн.</p>
+  </div>
 
-<div id="hiddenMessage">
-  <h2>Поздравляем, Наргиз!</h2>
-  <p>Ты дождалась этого момента — вот твоя поздравительная открытка:</p>
-  <h2>Дорогая Наргиз,</h2>
-  <p>а</p>
-  <p>п</p>
-  <p>е</p>
-  <p>пр</p>
-  <p>е</p>
-  <p>е</p>
-  <p>ен.</p>
-  <p>екн.</p>
-</div>
+  <div id="confettiContainer"></div>
 
-<div id="confettiContainer"></div>
+  <script>
+    const startButton = document.getElementById('startButton');
+    const welcomeSection = document.getElementById('welcomeSection');
+    const questionsSection = document.getElementById('questionsSection');
+    const hiddenMessage = document.getElementById('hiddenMessage');
 
-<script>
-  const startButton = document.getElementById('startButton');
-  const welcomeSection = document.getElementById('welcomeSection');
-  const countdownSection = document.getElementById('countdownSection');
-  const hiddenMessage = document.getElementById('hiddenMessage');
-  const timerDisplay = document.getElementById('timer');
+    startButton.addEventListener('click', function () {
+      welcomeSection.style.display = 'none';
+      questionsSection.style.display = 'block';
+    });
 
-  const targetDate = new Date("2025-05-25T13:03:01");
+    document.getElementById('finalAnswerForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const userAnswer = document.getElementById('answer').value;
+      const correctAnswer = "971.";
 
-  startButton.addEventListener('click', () => {
-    welcomeSection.style.display = 'none';
-    countdownSection.style.display = 'block';
-    updateTimer();
-    setInterval(updateTimer, 1000);
-  });
-
-  function updateTimer() {
-    const now = new Date();
-    const distance = targetDate - now;
-
-    if (distance <= 0) {
-      countdownSection.style.display = 'none';
-      hiddenMessage.style.display = 'block';
-      createConfetti();
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    timerDisplay.innerHTML = `${days} дн ${hours} ч ${minutes} мин ${seconds} сек`;
-  }
-
-  function createConfetti() {
-    const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
-    const totalConfetti = 150;
-
-    for (let i = 0; i < totalConfetti; i++) {
-      const confetti = document.createElement('div');
-      confetti.className = 'confetti';
-      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
-      let left, top;
-
-      if (Math.random() < 0.5) {
-        if (Math.random() < 0.5) {
-          left = Math.random() * (window.innerWidth * 0.1);
-        } else {
-          left = window.innerWidth * 0.9 + Math.random() * (window.innerWidth * 0.1);
-        }
-        top = Math.random() * window.innerHeight;
+      if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+        questionsSection.style.display = 'none';
+        hiddenMessage.style.display = 'block';
+        createConfetti();
       } else {
-        left = Math.random() * window.innerWidth;
-        if (Math.random() < 0.5) {
-          top = Math.random() * (window.innerHeight * 0.1);
-        } else {
-          top = window.innerHeight * 0.9 + Math.random() * (window.innerHeight * 0.1);
-        }
+        alert("Ха, ты думала, что всё так просто? Подумай ещё раз.");
       }
+    });
 
-      confetti.style.left = left + 'px';
-      confetti.style.top = top + 'px';
+    function createConfetti() {
+      const colors = ['#ffb703', '#fb8500', '#f72585', '#7209b7', '#4cc9f0', '#ff006e'];
+      const totalConfetti = 120;
 
-      document.getElementById('confettiContainer').appendChild(confetti);
+      for (let i = 0; i < totalConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+        const left = Math.random() * window.innerWidth;
+        const top = Math.random() * window.innerHeight;
+
+        confetti.style.left = left + 'px';
+        confetti.style.top = top + 'px';
+
+        document.getElementById('confettiContainer').appendChild(confetti);
+      }
     }
-  }
-</script>
+  </script>
 </body>
 </html>
