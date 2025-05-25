@@ -1,144 +1,188 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
-    <title>Happy birthday</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background-color: #f8e1f3;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <title>Happy birthday</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+      background-color: #f8e1f3;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+    }
 
-        #welcomeSection, #hiddenMessage {
-            border: 5px solid #ff69b4;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: #ffffff;
-            margin-bottom: 20px;
-            transition: opacity 0.5s;
-            position: relative;
-            z-index: 1;
-        }
+    #welcomeSection, #countdownSection, #hiddenMessage {
+      border: 5px solid #ff69b4;
+      padding: 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-bottom: 20px;
+      transition: opacity 0.5s;
+      position: relative;
+      z-index: 1;
+    }
 
-        @media (max-width: 768px) {
-            #welcomeSection, #hiddenMessage {
-                padding: 26px;
-                border-width: 7px;
-            }
-        }
+    @media (max-width: 768px) {
+      #welcomeSection, #countdownSection, #hiddenMessage {
+        padding: 26px;
+        border-width: 7px;
+      }
+    }
 
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #ff69b4;
-            border: none;
-            border-radius: 10px;
-            color: white;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
+    #countdownSection {
+      display: none;
+    }
 
-        button:hover {
-            background-color: #ff1493;
-        }
+    #hiddenMessage {
+      display: none;
+    }
 
-        #confettiContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff69b4;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 15px;
+    }
 
-        .confetti {
-            position: absolute;
-            opacity: 0.9;
-            width: 15px;
-            height: 15px;
-            border-radius: 50%;
-        }
+    button:hover {
+      background-color: #ff1493;
+    }
 
-        @keyframes fall {
-            to {
-                transform: translateY(100vh);
-            }
-        }
-    </style>
+    #confettiContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      opacity: 0.9;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    #timer {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <div id="welcomeSection">
-        <h1>Привет, Наргиз!</h1>
-        <p>Сегодня особенный день, и мы приготовили для тебя поздравление. Готова его увидеть?</p>
-        <button id="showCardButton">Открыть открытку</button>
-    </div>
 
-    <div id="hiddenMessage" style="display: none;">
-        <h2>Поздравляем, Наргиз!</h2>
-        <p>Ты успешно прошла все испытания и нашла правильный ответ! Вот твоя поздравительная открытка:</p>
-        <h2>Дорогая Наргиз,</h2>
-        <p>Поздравляем тебя с 16-ым днём рождения. В этот особенный день мы хотим пожелать тебе, чтобы каждый миг твоей жизни был наполнен светом, радостью и спокойствием. Пусть каждый день приносит тебе что-то хорошее, будь то новая возможность, приятная встреча или просто теплый момент, когда ты чувствуешь себя счастливой. Пускай в твоем сердце всегда будет мир, а в душе — тепло и уверенность в завтрашнем дне.</p>
-        <p>Надеемся, что в жизни тебе всегда будет хватать сил и вдохновения идти вперед. Желаем, чтобы каждый твой шаг был легким и уверенным, и ты всегда находила радость даже в самых простых вещах. Хотим, чтобы ты оставалась такой же доброй, светлой и открытой к миру. Пусть твоя нежность и женственность делают тебя особенной, и приносят тебе уважение и любовь окружающих.</p>
-        <p>А ещё пусть в твоей жизни появится человек, который будет для тебя настоящей опорой. Тот, кто не боится принимать важные решения, кто готов защитить тебя в любой момент. Чтобы он был смелым и сильным, не только в поступках, но и в своей любви и преданности тебе. Пусть рядом с ним ты чувствуешь защиту, а его забота будет искренней и настоящей.</p>
-        <p>Будь он всегда рядом, когда тебе это нужно, готовый поддержать и помочь в любых ситуациях. Но главное, чтобы он уважал тебя, ценил твою доброту и всегда понимал, насколько ты важна для него. Да будут его поступки говорить громче любых слов, и ты всегда чувствовала его любовь и уважение.</p>
-        <p>Пусть у тебя всегда будет возможность заниматься тем, что тебе нравится. Желаем, чтобы твои дни были наполнены интересными событиями, радостными встречами и моментами, когда ты можешь просто быть собой. Пускай каждый день приносит тебе маленькие, но такие важные радости, будь то улыбка близкого человека или просто тихий вечер с любимой книгой.</p>
-        <p>Мы хотим, чтобы в твоей жизни было много здоровья и энергии для того, чтобы воплотить все свои мечты в реальность. Мы желаем, чтобы каждый новый день открывал перед тобой новые возможности, а ты всегда была полна сил идти вперед и достигать того, чего хочешь.</p>
-        <p>Пусть твоя жизнь будет полной. Полной счастья, любви, радости, но и маленьких моментов тишины и покоя. Пускай у тебя всегда будет время для себя, для своих мыслей и для тех людей, кто делает твою жизнь лучше.</p>
-        <p>С наилучшими пожеланиями,<br>Анил и Чингиз.</p>
-    </div>
+<div id="welcomeSection">
+  <h1>Привет, Наргиз!</h1>
+  <p>Сегодня особенный день, и он совсем близко. Подожди чуть-чуть — и тебя ждёт сюрприз!</p>
+  <button id="startButton">Показать таймер</button>
+</div>
 
-    <div id="confettiContainer"></div>
+<div id="countdownSection">
+  <h2>До открытия поздравления осталось:</h2>
+  <div id="timer">Загрузка...</div>
+</div>
 
-    <script>
-        const showCardButton = document.getElementById('showCardButton');
-        const welcomeSection = document.getElementById('welcomeSection');
-        const hiddenMessage = document.getElementById('hiddenMessage');
+<div id="hiddenMessage">
+  <h2>Поздравляем, Наргиз!</h2>
+  <p>Ты дождалась этого момента — вот твоя поздравительная открытка:</p>
+  <h2>Дорогая Наргиз,</h2>
+  <p>а</p>
+  <p>п</p>
+  <p>е</p>
+  <p>пр</p>
+  <p>е</p>
+  <p>е</p>
+  <p>ен.</p>
+  <p>екн.</p>
+</div>
 
-        showCardButton.addEventListener('click', function () {
-            welcomeSection.style.display = 'none';
-            hiddenMessage.style.display = 'block';
-            createConfetti();
-        });
+<div id="confettiContainer"></div>
 
-        function createConfetti() {
-            const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
-            const totalConfetti = 150;
+<script>
+  const startButton = document.getElementById('startButton');
+  const welcomeSection = document.getElementById('welcomeSection');
+  const countdownSection = document.getElementById('countdownSection');
+  const hiddenMessage = document.getElementById('hiddenMessage');
+  const timerDisplay = document.getElementById('timer');
 
-            for (let i = 0; i < totalConfetti; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+  const targetDate = new Date("2025-06-07T00:00:01");
 
-                let left, top;
-                if (Math.random() < 0.5) {
-                    if (Math.random() < 0.5) {
-                        left = Math.random() * (window.innerWidth * 0.1);
-                    } else {
-                        left = window.innerWidth * 0.9 + Math.random() * (window.innerWidth * 0.1);
-                    }
-                    top = Math.random() * window.innerHeight;
-                } else {
-                    left = Math.random() * window.innerWidth;
-                    if (Math.random() < 0.5) {
-                        top = Math.random() * (window.innerHeight * 0.1);
-                    } else {
-                        top = window.innerHeight * 0.9 + Math.random() * (window.innerHeight * 0.1);
-                    }
-                }
+  startButton.addEventListener('click', () => {
+    welcomeSection.style.display = 'none';
+    countdownSection.style.display = 'block';
+    updateTimer();
+    setInterval(updateTimer, 1000);
+  });
 
-                confetti.style.left = left + 'px';
-                confetti.style.top = top + 'px';
+  function updateTimer() {
+    const now = new Date();
+    const distance = targetDate - now;
 
-                document.getElementById('confettiContainer').appendChild(confetti);
-            }
+    if (distance <= 0) {
+      countdownSection.style.display = 'none';
+      hiddenMessage.style.display = 'block';
+      createConfetti();
+      return;
+    }
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    timerDisplay.innerHTML = `${days} дн ${hours} ч ${minutes} мин ${seconds} сек`;
+  }
+
+  function createConfetti() {
+    const colors = ['#ff0', '#ff3d00', '#ff4081', '#00e676', '#2979ff', '#651fff'];
+    const totalConfetti = 150;
+
+    for (let i = 0; i < totalConfetti; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+      let left, top;
+
+      if (Math.random() < 0.5) {
+        if (Math.random() < 0.5) {
+          left = Math.random() * (window.innerWidth * 0.1);
+        } else {
+          left = window.innerWidth * 0.9 + Math.random() * (window.innerWidth * 0.1);
         }
-    </script>
+        top = Math.random() * window.innerHeight;
+      } else {
+        left = Math.random() * window.innerWidth;
+        if (Math.random() < 0.5) {
+          top = Math.random() * (window.innerHeight * 0.1);
+        } else {
+          top = window.innerHeight * 0.9 + Math.random() * (window.innerHeight * 0.1);
+        }
+      }
+
+      confetti.style.left = left + 'px';
+      confetti.style.top = top + 'px';
+
+      document.getElementById('confettiContainer').appendChild(confetti);
+    }
+  }
+</script>
 </body>
 </html>
