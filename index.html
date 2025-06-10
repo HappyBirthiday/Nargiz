@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0" />
-  <title>Happy birthday</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -16,46 +16,70 @@
       color: #111111;
     }
 
-    #welcomeSection, #countdownSection, #hiddenMessage {
+    #loaderSection, #hiddenMessage {
       border: 5px solid #4682B4;
       padding: 20px;
       border-radius: 15px;
       background-color: #ffffff;
       margin-bottom: 20px;
-      transition: opacity 0.5s;
+      transition: opacity 1s;
       position: relative;
       z-index: 1;
     }
 
     @media (max-width: 768px) {
-      #welcomeSection, #countdownSection, #hiddenMessage {
+      #loaderSection, #hiddenMessage {
         padding: 26px;
         border-width: 7px;
       }
-    }
-
-    #countdownSection {
-      display: none;
     }
 
     #hiddenMessage {
       display: none;
     }
 
-    button {
+    #progress {
+      width: 100%;
+      background-color: #ccc;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+      position: relative;
+      height: 30px;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background-color: #32CD32;
+      transition: width 0.1s ease-in;
+    }
+
+    #progressText {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      line-height: 30px;
+      color: white;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    #revealButton {
       padding: 10px 20px;
       font-size: 16px;
       background-color: #FF1493;
       border: none;
       border-radius: 10px;
       color: white;
-      cursor: pointer;
-      margin-bottom: 15px;
-      transition: background-color 0.3s;
+      cursor: not-allowed;
+      opacity: 0.5;
+      transition: background-color 0.3s, opacity 0.5s;
     }
 
-    button:hover {
-      background-color: #C71585;
+    #revealButton.active {
+      cursor: pointer;
+      opacity: 1;
     }
 
     #confettiContainer {
@@ -65,7 +89,7 @@
       width: 100%;
       height: 100%;
       pointer-events: none;
-      z-index: 0;
+      z-index: -1;
     }
 
     .confetti {
@@ -76,35 +100,27 @@
       opacity: 0.9;
     }
 
-    #timer {
-      font-size: 24px;
-      margin-top: 20px;
-    }
     p {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 100%;
-}
-
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      max-width: 100%;
+    }
   </style>
 </head>
 <body>
 
-<div id="welcomeSection">
+<div id="loaderSection">
   <h1>Привет, Замина!</h1>
-  <p>Подожди чуть-чуть — и тебя ждёт поздравление!</p>
-  <button id="startButton">Показать таймер</button>
-</div>
-
-<div id="countdownSection">
-  <h2>До открытия поздравления осталось:</h2>
-  <div id="timer">Загрузка...</div>
+  <p>Подожди чуть-чуть — идёт загрузка...</p>
+  <div id="progress">
+    <div id="progressBar"></div>
+    <div id="progressText">0%</div>
+  </div>
+  <button id="revealButton" disabled>Открыть поздравление</button>
 </div>
 
 <div id="hiddenMessage">
-  <h2>Поздравляем, Замина!</h2>
-  <p>Ты дождалась этого момента — вот твоя поздравительная открытка:</p>
   <h2>Дорогая Замина,</h2>
   <p>Поздравляем тебя с твоим 16-летием! Искренне желаем, чтобы этот год принес тебе множество светлых и радостных моментов, достижения поставленных целей на этот год и уверенности в завтрашнем дне.</p>
   <p>Пусть учеба дается легко и приносит интересные открытия, а свободное время наполняется увлечениями, которые дарят пользу и радость. Желаем тебе встречать на своем пути добрых и надежных людей, искреннюю поддержку и возможности для развития.</p>
@@ -116,42 +132,46 @@
 <div id="confettiContainer"></div>
 
 <script>
-  const startButton = document.getElementById('startButton');
-  const welcomeSection = document.getElementById('welcomeSection');
-  const countdownSection = document.getElementById('countdownSection');
+  const progressBar = document.getElementById('progressBar');
+  const progressText = document.getElementById('progressText');
+  const revealButton = document.getElementById('revealButton');
+  const loaderSection = document.getElementById('loaderSection');
   const hiddenMessage = document.getElementById('hiddenMessage');
-  const timerDisplay = document.getElementById('timer');
 
-  const targetDate = new Date("2025-06-07T00:00:01");
+  let progress = 0;
+  const duration = 3100; 
+  const steps = 100;
+  const stepTime = duration / steps;
 
-  startButton.addEventListener('click', () => {
-    welcomeSection.style.display = 'none';
-    countdownSection.style.display = 'block';
-    updateTimer();
-    setInterval(updateTimer, 1000);
-  });
-
-  function updateTimer() {
-    const now = new Date();
-    const distance = targetDate - now;
-
-    if (distance <= 0) {
-      countdownSection.style.display = 'none';
-      hiddenMessage.style.display = 'block';
-      if (!window.confettiCreated) {
-        createConfetti();
-        window.confettiCreated = true;
+  function animateProgress() {
+    const interval = setInterval(() => {
+      progress++;
+      if (progress >= 100) {
+        clearInterval(interval);
+        progress = 100;
+        revealButton.disabled = false;
+        revealButton.classList.add('active');
+        revealButton.style.cursor = 'pointer';
       }
-      return;
-    }
-
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    timerDisplay.innerHTML = `${days} дн ${hours} ч ${minutes} мин ${seconds} сек`;
+      progressBar.style.width = progress + '%';
+      progressText.innerText = progress + '%';
+    }, stepTime);
   }
+
+  animateProgress();
+
+  revealButton.addEventListener('click', () => {
+    loaderSection.style.opacity = '0';
+    setTimeout(() => {
+      loaderSection.style.display = 'none';
+      hiddenMessage.style.display = 'block';
+      hiddenMessage.style.opacity = '0';
+      setTimeout(() => {
+        hiddenMessage.style.opacity = '1';
+        createConfetti();
+      }, 50);
+    }, 1000);
+  });
 
   function createConfetti() {
     const colors = ['#f44336', '#ffeb3b', '#4caf50', '#2196f3', '#ff9800', '#9c27b0'];
